@@ -1,3 +1,6 @@
+def mvn_init
+def grdl_init
+
 pipeline {
     agent any
     tools 
@@ -5,17 +8,100 @@ pipeline {
    	 	gradle 'gradle_env'
         maven 'maven_jenkins'
     }
-
+    parameters
+    {
+        choice(name:'Build_Tool', choices: ['Maven','Gradle'],description: 'Seleccion de Tipo Build')
+        booleanParam(name:'PushToNexus' , defaultValue:True ,'Enviar hacia el Repositorio Nexus')
+        booleanParam(name:'TestFromNexus' , defaultValue:False ,'Descargar el JAR desde Nexus y Testear')
+    }
     stages {
-        stage('Build - Test -  Jar')
+        stage('Init Scripts Maven')
         {
+           {
+                expression
+                {
+                    params.Build_Tool=='Maven'
+                }
+            }
+            script
+            {
+                echo "Agregando Script de Maven y Gradle"
+                mvn_init = load "maven.groovy"
+            }
+        }
+        stage('Init Scripts Gradle')
+        {
+           {
+                expression
+                {
+                    params.Build_Tool=='Gradle'
+                }
+            }
+            script
+            {
+                echo "Agregando Script  Gradle"
+                mvn_init = load "gradle.groovy"
+            }
+        }        
+        stage('Maven Compile')
+        {
+            when
+            {
+                expression
+                {
+                    params.Build_Tool=='Maven'
+                }
+            }
+            steps
+            {
+                mvn_init.maven_compile()
+            }
+
+        }
+        stage('Maven Test')
+        {
+            when
+            {
+                expression
+                {
+                    params.Build_Tool=='Maven'
+                }
+            }
+            steps
+            {
+                mvn_init.mavel_test()
+            }
+
+        }
+        stage ('Maven Package')
+        {
+            when
+            {
+                expression
+                {
+                    params.Build_Tool=='Maven'
+                }
+            }
+            steps
+            {
+                mvn_init.mavel_package()
+            }
+        }
+        stage('Gradle: Build - Test -  Jar')
+        {
+            when
+            {
+                expression
+                {
+                    params.Build_Tool=='Gradle'
+                }
+            }
             steps
             {
                 sh "gradle build"
                 sh "mvn clean install -e"
             }
         } 
-       
         stage('Sonarque')
  	    {
             steps
@@ -29,6 +115,13 @@ pipeline {
 
         stage('Run Gradle') 
         {
+            when
+            {
+                expression
+                {
+                    params.Build_Tool=='Gradle'
+                }
+            }
             steps 
             {
                 echo 'TODO: Gradle Run '
@@ -40,14 +133,28 @@ pipeline {
 
         stage('PushToNexus')
         {
+            when
+            {
+                expression
+                {
+                    params.PushToNexus
+                }
+            }
             steps 
             {
                 nexusPublisher nexusInstanceId: 'nexus_docker', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: "${WORKSPACE}/build/DevOpsUsach2020-0.0.1.jar"]], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]]
             }
         }
 
-        stage ('Download Jar from Nexus')
-        { 
+        stage ('Download Nexus Jar-Run-Test')
+        {
+            when
+            {
+                expression
+                {
+                    params.TestFromNexus
+                }
+            }
 	        steps
 		    {
    		        sh 'curl http://nexus:8081/repository/devops-usach-nexus/com/devopsusach2020/DevOpsUsach2020/001/DevOpsUsach2020-001.jar --output /tmp/DevOpsUsach2020-001.jar'
@@ -60,15 +167,14 @@ pipeline {
        }
        stage ('Send to Nexus 1.0.0')
        {
-       	   steps 
+       	    steps 
 		    {
 		        echo 'TODO: Maven Install to version 1.0.0'
 		        sh "mvn versions:set -DnewVersion=1.0.0"
                 sh "mvn clean package -e"
                 sh "mvn clean install" 
                 nexusPublisher nexusInstanceId: 'nexus_docker', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: "${WORKSPACE}/build/DevOpsUsach2020-1.0.0.jar"]], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '1.0.0']]]
-		}
-           
+		    }    
        }
    }
 }
