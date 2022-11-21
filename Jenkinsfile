@@ -210,7 +210,7 @@ pipeline {
        }
        stage ('Send to Nexus 1.0.0')
        {
-            when:
+            when
             {
                 expression
                 {
