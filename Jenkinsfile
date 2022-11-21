@@ -32,9 +32,10 @@ pipeline {
             steps 
             {
                 echo 'TODO: Gradle Run '
-                sh "gradle bootRun &"
-                sh "sleep 20"
+                sh "gradle bootRun "
+                sh "sleep 10"
                 sh "curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
+                cleanWs()
             }
         }
 
