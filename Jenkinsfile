@@ -24,11 +24,15 @@ pipeline {
                     params.Build_Tool=='Maven'
                 }
             }
-            script
-            {
-                echo "Agregando Script de Maven y Gradle"
-                mvn_init = load "maven.groovy"
-            }
+            steps
+                {
+                script
+                    {
+                        echo "Agregando Script de Maven y Gradle"
+                        mvn_init = load "maven.groovy"
+                    }
+                }
+
         }
         stage('Init Scripts Gradle')
         {
@@ -39,10 +43,13 @@ pipeline {
                     params.Build_Tool=='Gradle'
                 }
             }
-            script
+            steps
             {
-                echo "Agregando Script  Gradle"
-                mvn_init = load "gradle.groovy"
+                script
+                {
+                    echo "Agregando Script  Gradle"
+                    mvn_init = load "gradle.groovy"
+                }
             }
         }        
         stage('Maven Compile')
