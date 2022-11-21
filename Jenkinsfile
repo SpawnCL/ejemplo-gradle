@@ -33,6 +33,7 @@ pipeline {
                     {
                         echo "Agregando Script de Maven y Gradle"
                         mvn_init = load "maven.groovy"
+                        pathbuild ="/build/"
                     }
                 }
 
@@ -52,6 +53,7 @@ pipeline {
                 {
                     echo "Agregando Script  Gradle"
                     grdl_init = load "gradle.groovy"
+                    pathbuild = "/build/libs/"
                 }
             }
         }        
@@ -165,6 +167,7 @@ pipeline {
                 }
         
             }
+
             steps 
             {
                 script
@@ -184,19 +187,18 @@ pipeline {
                     params.PushToNexus
                     if (params.Build_Tool=='Maven')
                     {
-                        filebuild="${WORKSPACE}/build/"
+                        pathbuild="/build/"
                     }
                     else
                     {
-                        filebuild="${WORKSPACE}/build/libs/"
+                        pathbuild="/build/libs/"
                     }
-
                 }
-
             }
+
             steps 
             {
-                nexusPublisher nexusInstanceId: 'nexus_docker', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: "${filebuild}"+"DevOpsUsach2020-0.0.1.jar"]], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]]
+                nexusPublisher nexusInstanceId: 'nexus_docker', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: "${WORKSPACE}"+"${pathbuild}"+"DevOpsUsach2020-0.0.1.jar"]], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]]
             }
         }
 
@@ -233,11 +235,20 @@ pipeline {
             }
        	    steps 
 		    {
+                if (params.Build_Tool=='Maven')
+                    {
+                        pathbuild="/build/"
+                    }
+                else
+                    {
+                        pathbuild="/build/libs/"
+                    }
+                
 		        echo 'TODO: Maven Install to version 1.0.0'
 		        sh "mvn versions:set -DnewVersion=1.0.0"
                 sh "mvn clean package -e"
                 sh "mvn clean install" 
-                nexusPublisher nexusInstanceId: 'nexus_docker', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: "${WORKSPACE}/build/DevOpsUsach2020-1.0.0.jar"]], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '1.0.0']]]
+                nexusPublisher nexusInstanceId: 'nexus_docker', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: "${WORKSPACE}"+"${pathbuild}"+"DevOpsUsach2020-1.0.0.jar"]], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '1.0.0']]]
 		    }    
         
        }
