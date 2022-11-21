@@ -228,22 +228,11 @@ pipeline {
                 expression
                 {
                     params.RVNexus
-
-                    
-            
                 }
             }
        	    steps 
-		    {
-                if (params.Build_Tool=='Maven')
-                    {
-                        pathbuild="/build/"
-                    }
-                else
-                    {
-                        pathbuild="/build/libs/"
-                    }
-                
+		    { 
+              
 		        echo 'TODO: Maven Install to version 1.0.0'
 		        sh "mvn versions:set -DnewVersion=1.0.0"
                 sh "mvn clean package -e"
