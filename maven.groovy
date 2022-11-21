@@ -11,4 +11,11 @@ def mavel_package()
 		sh 'mvn clean package -e'
 	}
 
+def maven_run_jar_test()
+	{
+		sh "nohup bash mvn spring-boot:run &"
+		sh "sleep 5"
+		sh "curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
+	}
+
 return this

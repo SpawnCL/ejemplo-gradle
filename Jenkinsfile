@@ -120,6 +120,24 @@ pipeline {
                 sh "mvn clean install -e"
             }
         } 
+
+        stage('Maven: Run and Test App')
+        {
+            when
+            {
+                expression
+                {
+                    params.Build_Tool=='Maven'
+                }
+            }
+            steps
+            {
+                script
+                {
+                    mvn_init.maven_run_jar_test()
+                }
+            }
+        } 
         stage('Sonarque')
  	    {
             steps
