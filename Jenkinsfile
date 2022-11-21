@@ -17,6 +17,7 @@ pipeline {
     stages {
         stage('Init Scripts Maven')
         {
+           when
            {
                 expression
                 {
@@ -31,6 +32,7 @@ pipeline {
         }
         stage('Init Scripts Gradle')
         {
+           when
            {
                 expression
                 {
