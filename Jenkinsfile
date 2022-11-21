@@ -118,8 +118,11 @@ pipeline {
             }
             steps
             {
-                grdl_init.gradle_build_test_jar()
-                /*sh "mvn clean install -e" */
+                script
+                {
+                    grdl_init.gradle_build_test_jar()
+                    /*sh "mvn clean install -e" */
+                }
             }
         } 
 
