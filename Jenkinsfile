@@ -214,7 +214,7 @@ pipeline {
             }
 	      
        }
-       */ stage ('Maven Only Publish Nexus 1.0.0')
+       stage ('Maven Only Publish Nexus 1.0.0')
        {
             when
             {
