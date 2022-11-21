@@ -2,8 +2,8 @@ pipeline {
     agent any
     tools 
     {
-   	maven 'maven_jenkins'
-  	gradle 'gradle_env'
+   	 	gradle 'gradle_env'
+        maven 'maven_jenkins'
     }
 
     stages {
