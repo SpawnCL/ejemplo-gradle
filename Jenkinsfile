@@ -10,9 +10,9 @@ pipeline {
     }
     parameters
     {
-        choice(name:'Build_Tool', choices: ['Maven','Gradle'],description: 'Seleccion de Tipo Build')
-        booleanParam(name:'PushToNexus' , defaultValue:True ,'Enviar hacia el Repositorio Nexus')
-        booleanParam(name:'TestFromNexus' , defaultValue:False ,'Descargar el JAR desde Nexus y Testear')
+        choice(name: 'Build_Tool', choices: ['Maven','Gradle'], description: 'Seleccion de Tipo Build')
+        booleanParam(name: 'PushToNexus' , defaultValue: True , description: 'Enviar hacia el Repositorio Nexus')
+        booleanParam(name: 'TestFromNexus' , defaultValue: False , description: 'Descargar el JAR desde Nexus y Testear')
     }
     stages {
         stage('Init Scripts Maven')
