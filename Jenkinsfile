@@ -182,7 +182,7 @@ pipeline {
                 expression
                 {
                     params.PushToNexus
-                    if params.Build_Tool=='Maven'
+                    if (params.Build_Tool=='Maven')
                     {
                         filebuild="${WORKSPACE}/build/"
                     }
