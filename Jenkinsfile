@@ -2,7 +2,7 @@ pipeline {
     agent any
     tools 
     {
-   	 	gradle 'gradle_env'
+   	gradle 'gradle_env'
         maven 'maven_jenkins'
     }
 
