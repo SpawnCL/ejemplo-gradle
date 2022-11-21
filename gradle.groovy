@@ -1,13 +1,11 @@
-def gradle_compile()
+def gradle_build_test_jar()
         {
-                sh './mvnw clean compile -e'
-        }
-def mavel_test()
-        {
-                sh './mvnw clean test -e'
-        }
-def mavel_package()
-        {
-                sh './mvnw clean package -e'
+                sh 'gradle build'
         }
 
+def gradle_run()
+        {
+                sh "gradle bootRun &"
+                sh "sleep 10"
+                sh "curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
+        }
