@@ -1,14 +1,14 @@
 def maven_compile()
 	{
-		sh './mvnw clean compile -e'
+		sh 'mvn clean compile -e'
     	}
 def mavel_test()
 	{
-		sh './mvnw clean test -e'
+		sh 'mvn clean test -e'
 	}
 def mavel_package()
 	{
-		sh './mvnw clean package -e'
+		sh 'mvn clean package -e'
 	}
 
 return this
