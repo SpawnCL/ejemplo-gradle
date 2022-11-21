@@ -1,6 +1,6 @@
 def mvn_init
 def grdl_init
-def filebuild
+def pathbuild
 
 pipeline {
     agent any
