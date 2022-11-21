@@ -1,9 +1,5 @@
-def gradle_build_test_jar(versionp="")
+def gradle_build_test_jar()
         {
-                if (versionp=="")
-                {
-                        sh "gradle -Pversion=${versionp} publish"
-                }
                 sh "gradle build"
                 sh "gradle clean build" 
         }

@@ -214,7 +214,7 @@ pipeline {
             }
 	      
        }
-       stage ('Send to Nexus 1.0.0')
+       */ stage ('Maven Only Publish Nexus 1.0.0')
        {
             when
             {
@@ -229,17 +229,15 @@ pipeline {
                 {
                 if ( params.Build_Tool =='Maven' )
                     {
-                    mvn_init.maven_update_version()
+                    mvn_init.maven_update_version
+                    nexusPublisher nexusInstanceId: 'nexus_docker', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: "${WORKSPACE}"+"${pathbuild}"+"DevOpsUsach2020-1.0.0.jar"]], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '1.0.0']]]
                     }
-                else 
+                else
                     {
-                    grdl_init.gradle_build_test_jar('1.0.0')
+                        echo "Cannot Republish on Gradle yet :) "
                     }
-                }
-             nexusPublisher nexusInstanceId: 'nexus_docker', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: "${WORKSPACE}"+"${pathbuild}"+"DevOpsUsach2020-1.0.0.jar"]], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '1.0.0']]]
 
-		    }    
-        
-       }
+		        }    
+            }
    }
 }
