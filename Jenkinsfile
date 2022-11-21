@@ -64,9 +64,9 @@ pipeline {
        	   steps 
 		    {
 		        echo 'TODO: Maven Install to version 1.0.0'
-		        sh "./mvnw versions:set -DnewVersion=1.0.0"
-                sh "./mvnw clean package -e"
-                sh "./mvnw clean install" 
+		        sh "mvn versions:set -DnewVersion=1.0.0"
+                sh "mvn clean package -e"
+                sh "mvn clean install" 
                 nexusPublisher nexusInstanceId: 'nexus_docker', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: "${WORKSPACE}/build/DevOpsUsach2020-1.0.0.jar"]], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '1.0.0']]]
 		}
            
