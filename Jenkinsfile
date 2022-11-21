@@ -50,7 +50,6 @@ pipeline {
         { 
 	        steps
 		    {
-                cleanWs()
    		        sh 'curl http://nexus:8081/repository/devops-usach-nexus/com/devopsusach2020/DevOpsUsach2020/001/DevOpsUsach2020-001.jar --output /tmp/DevOpsUsach2020-001.jar'
                 sh 'java -jar /tmp/DevOpsUsach2020-001.jar &'
 		        sh 'curl -X GET  http://localhost:8081/rest/mscovid/test?msg=testing'
