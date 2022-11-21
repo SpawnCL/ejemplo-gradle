@@ -63,7 +63,10 @@ pipeline {
             }
             steps
             {
-                mvn_init.maven_compile()
+                script
+                {
+                    mvn_init.maven_compile()
+                }
             }
 
         }
@@ -78,7 +81,10 @@ pipeline {
             }
             steps
             {
-                mvn_init.mavel_test()
+                script
+                {
+                    mvn_init.mavel_test()
+                }
             }
 
         }
@@ -93,7 +99,10 @@ pipeline {
             }
             steps
             {
-                mvn_init.mavel_package()
+                script
+                {
+                    mvn_init.mavel_package()
+                }
             }
         }
         stage('Gradle: Build - Test -  Jar')
