@@ -50,7 +50,7 @@ pipeline {
                 script
                 {
                     echo "Agregando Script  Gradle"
-                    mvn_init = load "gradle.groovy"
+                    grdl_init = load "gradle.groovy"
                 }
             }
         }        
