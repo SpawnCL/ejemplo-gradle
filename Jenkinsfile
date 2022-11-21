@@ -12,6 +12,7 @@ pipeline {
             steps
             {
                 sh "gradle build"
+                sh "maven clean install -e"
             }
         } 
        
