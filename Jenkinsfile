@@ -16,13 +16,6 @@ pipeline {
     }
     stages 
     {
-        when
-        {
-        expression
-        {
-        params.Build_Tool=='Maven'
-        }
-        }
         stage('Init Scripts Maven')
         {
            when
@@ -42,6 +35,24 @@ pipeline {
                 }
 
         }
+        stage('Init Scripts Gradle')
+        {
+           when
+           {
+                expression
+                {
+                    params.Build_Tool=='Gradle'
+                }
+            }
+            steps
+            {
+                script
+                {
+                    echo "Agregando Script  Gradle"
+                    mvn_init = load "gradle.groovy"
+                }
+            }
+        }        
         stage('Maven Compile')
         {
             when
@@ -203,30 +214,5 @@ pipeline {
                 nexusPublisher nexusInstanceId: 'nexus_docker', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: "${WORKSPACE}/build/DevOpsUsach2020-1.0.0.jar"]], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '1.0.0']]]
 		    }    
        }
-   }
-   stages
-   {
-        when
-        {
-        expression
-        {
-            params.Build_Tool=='Gradle'
-        }
-        }
-        stage('Gradle: Build - Test -  Jar')
-        {
-            when
-            {
-                expression
-                {
-                    params.Build_Tool=='Gradle'
-                }
-            }
-            steps
-            {
-                sh "gradle build"
-                sh "mvn clean install -e"
-            }
-        }   
    }
 }
