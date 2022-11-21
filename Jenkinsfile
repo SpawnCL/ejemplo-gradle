@@ -2,7 +2,7 @@ pipeline {
     agent any
     tools 
     {
-   	gradle 'gradle_env'
+   	 	gradle 'gradle_env'
         maven 'maven_jenkins'
     }
 
@@ -12,7 +12,7 @@ pipeline {
             steps
             {
                 sh "gradle build"
-                sh "maven clean install -e"
+                sh "mvn clean install -e"
             }
         } 
        
