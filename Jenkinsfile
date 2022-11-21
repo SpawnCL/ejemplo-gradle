@@ -26,12 +26,13 @@ pipeline {
             }
 	    }
 
-        stage('Run & Run') 
+        stage('Run Gradle') 
         {
             steps 
             {
                 echo 'TODO: Gradle Run '
                 sh "gradle bootRun &"
+                sh "sleep 20"
                 sh "curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
             }
         }
