@@ -225,11 +225,14 @@ pipeline {
             }
        	    steps 
 		    { 
-              
-		        echo 'TODO: Maven Install to version 1.0.0'
-		        sh "mvn versions:set -DnewVersion=1.0.0"
-                sh "mvn clean package -e"
-                sh "mvn clean install" 
+                if (params.Build_Tool=='Maven')
+                {
+                    mvn_init.maven_update_version()
+                }
+                else 
+                {
+                    grdl_init.gradle_build_test_jar('1.0.0')
+                }
                 nexusPublisher nexusInstanceId: 'nexus_docker', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: "${WORKSPACE}"+"${pathbuild}"+"DevOpsUsach2020-1.0.0.jar"]], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '1.0.0']]]
 		    }    
         
