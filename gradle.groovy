@@ -1,6 +1,6 @@
 def gradle_build_test_jar(versionp="")
         {
-                if (version=="")
+                if (versionp=="")
                 {
                         sh "gradle -Pversion=${versionp} publish"
                 }
