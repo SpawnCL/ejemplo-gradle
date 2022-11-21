@@ -185,14 +185,7 @@ pipeline {
                 expression
                 {
                     params.PushToNexus
-                    if (params.Build_Tool=='Maven')
-                    {
-                        pathbuild="/build/"
-                    }
-                    else
-                    {
-                        pathbuild="/build/libs/"
-                    }
+
                 }
             }
 
