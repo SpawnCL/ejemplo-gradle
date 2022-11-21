@@ -4,10 +4,7 @@ def gradle_build_test_jar(versionp="")
                 {
                         sh "gradle -Pversion=${versionp} publish"
                 }
-                else
-                {
-                        sh "gradle build"
-                }
+                sh "gradle build"
                 sh "gradle clean build" 
         }
 def gradle_run()
