@@ -21,8 +21,8 @@ def maven_update_version(versionp='')
 	{
 		echo "TODO: Maven Install to version ${versionp}" 
 		sh "mvn versions:set -DnewVersion=${versionp}"
-        sh "mvn clean package -e"
-        sh "mvn clean install" 
+                sh "mvn clean package -e"
+                sh "mvn clean install" 
 	}
 
 return this
