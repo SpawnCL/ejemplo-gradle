@@ -245,7 +245,11 @@ pipeline {
        {
         success
         {
-            slackSend channel: 'C045DSH239N', color: '#17FF00', message: "Build Success: ${env.CHANGE_AUTHOR} ${env.JOB_NAME} ${params.Build_Tool} Ejecucion Exitosa"
+            // Git committer email
+            GIT_COMMIT_USERNAME = sh (script: 'git config --get --global user.name', returnStdout: true ).trim()
+            echo "Git committer email: ${GIT_COMMIT_USERNAME}"
+
+            slackSend channel: 'C045DSH239N', color: '#17FF00', message: "Build Success: ${GIT_COMMIT_USERNAME} ${env.JOB_NAME} ${params.Build_Tool} Ejecucion Exitosa"
         }
         failure
         {
