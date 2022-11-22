@@ -11,8 +11,8 @@ pipeline {
     }
     parameters
     {
-        choice(name: 'Build_Tool', choices: ['Maven','Gradle'], description: 'Seleccion de Tipo Build')
-        booleanParam(name: 'PushToNexus' , defaultValue: true , description: 'Enviar hacia el Repositorio Nexus')
+        choice(name: 'Build_Tool', choices: ['Gradle','Maven'], description: 'Seleccion de Tipo Build')
+        booleanParam(name: 'PushToNexus' , defaultValue: false , description: 'Enviar hacia el Repositorio Nexus')
         booleanParam(name: 'TestFromNexus' , defaultValue: false , description: 'Descargar el JAR desde Nexus y Testear')
         booleanParam(name: 'RVNexus', defaultValue: false, description: 'Release Version 1.0.0 a Nexus')
     }
@@ -245,12 +245,11 @@ pipeline {
        {
         success
         {
-            slackSend channel: 'C045DSH239N', color: '#17FF00', message: "Build Success:  ${env.GIT_COMMITTER_NAME} ${env.JOB_NAME} ${params.Build_Tool} Ejecucion Exitosa"
+            slackSend channel: 'C045DSH239N', color: '#17FF00', message: "Build Success: ${env.CHANGE_AUTHOR_DISPLAY_NAME} ${env.JOB_NAME} ${params.Build_Tool} Ejecucion Exitosa"
         }
         failure
         {
-            slackSend channel: 'C045DSH239N', color: '#008000', message: "Build Losser:  ${env.GIT_COMMITTER_NAME} ${env.JOB_NAME} ${params.Build_Tool} Ejecucion Fallida (<${env.BUILD_URL}|Open>)"
-
+            slackSend channel: 'C045DSH239N', color: '#FF0000', message: "Build Fallido: ${env.CHANGE_AUTHOR_DISPLAY_NAME} ${env.JOB_NAME} ${params.Build_Tool} Ejecucion Fallida (<${env.BUILD_URL}|Open>)"
         }
 
        }
