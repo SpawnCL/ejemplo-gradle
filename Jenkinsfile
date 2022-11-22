@@ -229,7 +229,7 @@ pipeline {
                 {
                 if ( params.Build_Tool =='Maven' )
                     {
-                    mvn_init.maven_update_version('1.0.0')
+                        
                     nexusPublisher nexusInstanceId: 'nexus_docker', nexusRepositoryId: 'devops-usach-nexus', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: "${WORKSPACE}"+"${pathbuild}"+"DevOpsUsach2020-1.0.0.jar"]], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '1.0.0']]]
                     }
                 else
@@ -239,6 +239,19 @@ pipeline {
 
 		        }    
             }
+       }
+       post
+       {
+        success
+        {
+            slackSend channel: 'C045DSH239N', color: '#17FF00', message: "Build Success:  ${env.GIT_COMMITTER_NAME} ${env.JOB_NAME} ${params.Build_Tool} Ejecucion Exitosa"
+        }
+        failure
+        {
+            slackSend channel: 'C045DSH239N', color: '#008000', message: "Build Losser:  ${env.GIT_COMMITTER_NAME} ${env.JOB_NAME} ${params.Build_Tool} Ejecucion Fallida (<${env.BUILD_URL}|Open>)"
+
+        }
+
        }
    }
 }
