@@ -240,7 +240,8 @@ pipeline {
 		        }    
             }
        }
-       post
+   }
+   post
        {
         success
         {
@@ -253,5 +254,4 @@ pipeline {
         }
 
        }
-   }
 }
