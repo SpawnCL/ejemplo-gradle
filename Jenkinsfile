@@ -35,7 +35,7 @@ pipeline {
                         echo "Agregando Script de Maven y Gradle"
                         mvn_init = load "maven.groovy"
                         pathbuild ="/build/"
-                        GIT_COMMIT_USERNAME = sh (script: 'git config --get --global user.name', returnStdout: true ).trim()
+                        GIT_COMMIT_USERNAME = sh (script: 'git ls-remote --get-url origin | cut -d: -f2 | cut -d/ -f1', returnStdout: true ).trim()
                     }
                 }
 
@@ -56,7 +56,7 @@ pipeline {
                     echo "Agregando Script  Gradle"
                     grdl_init = load "gradle.groovy"
                     pathbuild = "/build/libs/"
-                    GIT_COMMIT_USERNAME = sh (script: 'git config --get --global user.name', returnStdout: true ).trim()
+                    GIT_COMMIT_USERNAME = sh (script: 'git ls-remote --get-url origin | cut -d: -f2 | cut -d/ -f1', returnStdout: true ).trim()
                 }
             }
         }        
