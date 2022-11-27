@@ -19,6 +19,12 @@ pipeline {
     }
     stages 
     {
+        stage("Env Variables")
+        {
+        steps {
+                sh "printenv"
+            }
+        }
         stage('Init Scripts Maven')
         {
            when
@@ -36,6 +42,7 @@ pipeline {
                         mvn_init = load "maven.groovy"
                         pathbuild ="/build/"
                         GIT_COMMIT_USERNAME = sh (script: 'git show -s --pretty=%an', returnStdout: true ).trim()
+                        
                     }
                 }
 
