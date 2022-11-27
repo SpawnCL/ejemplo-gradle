@@ -2,6 +2,7 @@ def mvn_init
 def grdl_init
 def pathbuild
 def GIT_COMMIT_USERNAME
+def versionType
 
 pipeline {
     agent any
@@ -21,8 +22,27 @@ pipeline {
     {
         stage("Env Variables")
         {
-        steps {
+        steps
+            {
                 sh "printenv"
+            }
+        }
+        stage ('Branch main')
+        {
+            when
+            {
+                branch "main"
+                versionType='MAIN'
+                echo "${env.BRANCH_NAME}"
+            }
+        }
+        stage ('Branch maven-gradle')
+        {
+            when
+            {
+                branch "maven-gradle"
+                versionType="Rama ${env.BRANCH_NAME}"
+                echo "${env.BRANCH_NAME}"
             }
         }
         stage('Init Scripts Maven')
@@ -255,11 +275,11 @@ pipeline {
        {
         success
         {
-           slackSend channel: 'C045DSH239N', color: '#17FF00', message: "Build Success: ${GIT_COMMIT_USERNAME} ${env.JOB_NAME} ${params.Build_Tool} Ejecucion Exitosa"
+           slackSend channel: 'C045DSH239N', color: '#17FF00', message: "Build Success para ${versionType}, ${GIT_COMMIT_USERNAME} ${env.JOB_NAME} ${params.Build_Tool} Ejecucion Exitosa"
         }
         failure
         {
-            slackSend channel: 'C045DSH239N', color: '#FF0000', message: "Build Fallido: ${env.CHANGE_AUTHOR} ${env.JOB_NAME} ${params.Build_Tool} Ejecucion Fallida (<${env.BUILD_URL}|Open>)"
+            slackSend channel: 'C045DSH239N', color: '#FF0000', message: "Build Fallid para  ${versionType}, ${env.CHANGE_AUTHOR} ${env.JOB_NAME} ${params.Build_Tool} Ejecucion Fallida (<${env.BUILD_URL}|Open>)"
         }
 
        }
