@@ -8,7 +8,7 @@ pipeline {
     tools 
     {
    	 	gradle 'gradle_env'
-        maven 'maven_jenkins'
+        maven 'maven_env'
     }
     parameters
     {
