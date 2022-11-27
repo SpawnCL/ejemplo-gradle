@@ -35,8 +35,11 @@ pipeline {
             }
             steps
             {
-                versionType='MAIN'
-                echo "${env.BRANCH_NAME}"
+                script
+                {
+                    versionType='MAIN'
+                    echo "${env.BRANCH_NAME}"
+                }
             }
         }
         stage ('Branch maven-gradle')
@@ -47,8 +50,11 @@ pipeline {
             }
             steps
             {
-                versionType="Rama ${env.BRANCH_NAME}"
-                echo "${env.BRANCH_NAME}"
+                script
+                {
+                    versionType="Rama ${env.BRANCH_NAME}"
+                    echo "${env.BRANCH_NAME}"
+                }
             }
         }
         stage('Init Scripts Maven')
