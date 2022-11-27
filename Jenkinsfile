@@ -32,6 +32,9 @@ pipeline {
             when
             {
                 branch "main"
+            }
+            steps
+            {
                 versionType='MAIN'
                 echo "${env.BRANCH_NAME}"
             }
@@ -41,6 +44,9 @@ pipeline {
             when
             {
                 branch "maven-gradle"
+            }
+            steps
+            {
                 versionType="Rama ${env.BRANCH_NAME}"
                 echo "${env.BRANCH_NAME}"
             }
